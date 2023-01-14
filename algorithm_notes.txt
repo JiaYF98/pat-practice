@@ -1,0 +1,575 @@
+常用math函数
+fabs(double x) 对double类型变量取绝对值
+floor(double x) 对double类型变量向下取整
+ceil(double x) 对double类型变量向上取整
+pow(double x, double p) 乘方
+sqrt(double x) 算术平方根
+log(double x) 以e为底的对数，若对任意底数求对数，需要用换底公式转化为以e为底的对数
+sin(double x), cos(double x), tan(double x) 正弦、 余弦、 正切 （参数要求为弧度制）(pi * α / 180)
+asin(double x), acos(double x), atanc(double x) 反正弦、 反余弦、 反正切
+round(double x) 对double类型变量x四舍五入，返回值为double型，需要取整
+
+
+
+冒泡排序：
+for(int i = 0; i < n - 1; i++) {
+    for(int j = 0; j < n - i - 1; j++) {
+        if(a[j] > a[j + 1]) {
+            int temp = a[j];
+            a[j] = a[j + 1];
+            a[j + 1] = temp;
+        }
+    }
+}
+
+
+//数组大小较大（大概10^6级别），需要将其定义在主函数外面
+
+
+memset函数 对数组中每一个元素赋相同的值
+#include <cstring>
+memset(数组名， 值， sizeof(数组名));
+建议初学者使用memset赋0或-1， 对数组赋其它数字，用fill函数
+memset是按字节赋值，函数执行速度快
+
+#include <iostream>
+#include <cstring>
+using namespace std;
+
+int main() {
+    int a[5] = {1, 2, 3, 4, 5};
+
+    //赋初值0
+    memset(a, 0, sizeof(a));
+    for(int k : a) {
+        printf("%d ", k);
+    }
+    printf("\n");
+
+    //赋初值-1
+    memset(a, -1, sizeof(a));
+    for(int k : a) {
+        printf("%d ", k);
+    }
+    printf("\n");
+
+    //赋初值1
+    memset(a, 1, sizeof(a));
+    for(int k : a) {
+        printf("%d ", k);
+    }
+    printf("\n");
+
+    return 0;
+}
+
+输出结果：
+0 0 0 0 0 
+-1 -1 -1 -1 -1
+16843009 16843009 16843009 16843009 16843009
+
+就是对a指向的内存的20(sizeof(a))个字节进行赋值，
+每个字节都用数1去填充，转为二进制后，1就是00000001，占一个字节
+一个int元素是4字节，合一起是0000 0001,0000 0001,0000 0001,0000 0001   //每个字节都变为1
+转化成十六进制就是0x01010101，等于16843009，就完成了对一个int元素的赋值了
+
+
+
+scanf对字符类型有 %c 和 %s 两种格式； %c 能识别空格和换行并将其输入，%s 通过空格或换行来识别一个字符的结束
+getchar() 和 putchar(s) 用来输入和输出单个字符； getchar()能将空格和换行读入
+gets 用来输入一行字符串（注意：gets 识别换行符\n作为输入结束，因此 scanf 完一个整数后，如果要使用gets，需先用getchar接收整数后的换行符）
+puts用来输出一行字符串，并紧跟一个换行
+如果不是使用scanf函数的%s格式或gets函数输入字符串（例如使用getchar），一定要在输入的每个字符串后面加入“\n”，否则字符串末尾会输出乱码
+
+
+
+#include <cstring> 中包含的函数
+strlen(字符数组) 可以得到字符数组第一个\0前的字符的个数
+
+    char str[10];
+    gets(str);
+    printf("%d", strlen(str));
+
+strcmp(字符数组1, 字符数组2)
+字符数组1 < 字符数组2，返回负整数
+字符数组1 = 字符数组2，返回0
+字符数组1 > 字符数组2，返回正整数
+
+strcpy(字符数组1, 字符数组2)
+把字符数组2复制给字符数组1，这里的“复制”包括了结束符\0
+
+strcat(字符数组1, 字符数组2)
+把一个字符串接到另一个字符串后面
+
+
+
+sscanf(str, "%d", &n);  //把字符数组str中的内容以"%d"格式写到n中
+
+    int n;
+    double db;
+    char str[100] = "2048:3.14,hello", str2[100];
+    sscanf(str, "%d:%lf,%s", &n, &db, str2);
+    printf("n = %d, db = %.2f, str2 = %s", n, db, str2);
+
+输出结果：
+n = 2048, db = 3.14, str2 = hello
+
+sprintf(str, "%d", n);  //把n以"%d"的格式写到str字符数组中
+
+    int y = 2021, m = 3, d = 15;
+    int h = 21, minute = 14;
+    char str[100];
+    sprintf(str, "%d年%d月%d日 - %d:%d", y, m, d, h, minute);
+    printf("str = %s\n", str);
+
+输出结果：
+str = 2021年3月15日 - 21:14
+
+
+
+浮点数的比较：
+const double eps = 1e-8;
+#define Equ(a, b) ((fab((a) - (b))) < (eqs))  ("=="运算符)
+#define More(a, b) (((a) - (b)) > (eqs))   (">"运算符)
+#define Less(a, b) (((a) - (b)) < (-eqs))   ("<"运算符)
+#define MoreEqu(a, b) (((a) - (b)) > (-eqs))    (">="运算符)
+#define LessEqu(a, b) (((a) - (b)) < (eqs)) ("<="运算符)
+
+
+
+排序：
+void selectSort(int A[], int n) {
+    for(int i = 0; i < n - 1; i++) {
+        int k = i;
+        for(int j = i + 1; j < n; j++) {
+            if(A[j] < A[k]) {
+                k = j;
+            }
+        }
+        int temp = A[i];
+        A[i] = A[k];
+        A[k] = temp;
+    }
+}
+
+void insertSort(int A[], int n) {
+    for(int i = 1; i < n - 1; i++) {
+        int temp = A[i];
+        int j;
+        for(j = i - 1; j >= 0 && A[j] > temp; j--) {
+                A[j + 1] = A[j];
+        }
+        A[j + 1] = temp;
+    }
+}
+
+void insertSort(int A[], int n) {
+    for(int i = 1; i < n; i++) {
+        for(int j = 0; j < i; j++) {
+            if(A[j] > A[i]) {
+                int temp = A[i];
+                for(int k = i; k > j; k--) {
+                    A[k] = A[k - 1];
+                }
+                A[j] = temp;
+                break;
+            }
+        }
+    }
+}
+
+
+
+sort函数
+#include <algorithm>
+sort(首元素地址(必填), 尾元素地址的下一个地址(必填)，比较函数(非必填));
+不写比较函数默认是从小到大排序
+
+比较函数：
+bool cmp(int a, int b) {
+    return a > b;   //从大到小排序
+}
+bool cmp(int a, int b) {
+    return a < b;   //从小到大排序
+}
+
+例如：
+struct Student {
+    char name[10];
+    char id[10];
+    int score;
+    int r;
+}stu[100010];
+bool cmp(Student a, Student b) {
+    if(a.score != b.score) return a.score > b.score;
+    else return strcmp(a.name, b.name) < 0;     //strcmp返回值不一定是1或者-1;
+}
+排名的实现：
+排名的规则一般是：分数不同的排名不同，分数相同的排名相同但占用一个排位，如有五个学生的分数分别是90, 88, 88, 88, 86，
+那么这五个学生的排名分别是1, 2, 2, 2, 5
+这种要求一般是需要在结构体类型定义时就把排名这一项加到结构体中，对应代码
+stu[0].r = 1;
+for(int i = 1; i < n; i++) {
+    if(stu.[i].score == stu[i - 1].score) {
+        stu[i].r = stu[i - 1].r;
+    }
+    else {
+        stu[i].r = i + 1;
+    }
+}
+有时题目中不一定需要真的把排名记录下来，而是直接输出即可，可用下面的方法：
+int r = 1;
+for(int i = 0; i < n; i++) {
+    if(i > 0 && stu[i].score != stu[i - 1].score) {
+        r = i + 1;
+    }
+    //输出当前个体信息，或者令stu[i].r = r也行
+}
+
+
+
+散列hash
+用空间换时间，将元素通过一个函数转换为整数，使得该整数可以尽量唯一地代表这个元素， 这个转换函数称为散列函数 H
+
+字符串hash是指将一个字符串S映射为一个整数，使得该整数可以尽可能唯一地代表字符串S
+假设字符串均由大写字母A ~ Z构成
+int hashFunc(char S[], int len) {
+    int id = 0;
+    for(int i = 0; i < len; i++) {
+        id = id * 26 + (s[i] - 'A');
+    }
+    return id;
+}
+如果字符串出现了小写字母，可将A ~ Z作为 0 ~ 25， 而把 a ~ z作为 26 ~ 51，这时变成了五十二进制转换为十进制的问题
+int hashFunc(char S[], int len) {
+    int id = 0;
+    for(int i = 0; i < len; i++) {
+        S[i] >= 'A' && S[i] <= 'Z' ? id = id * 52 + (S[i] - 'A') : id = id * 52 + (S[i] - 'a') + 26; 
+    }
+    return id;
+}
+如果出现了数字，一般有两种处理方法：
+① 按照小写字母的处理方法，增大进制数至62
+② 如果保证在字符串的末尾是个确定个数的数字，那么就可以把前面英文字母的部分按上面的思路转换成整数，再将末尾的数字直接拼上去。
+例如对由三个字符加一位数字组成的字符串“BCD4”来说，就可以先将前面的“BCD”转换为整数731，然后直接拼接上末位的4变为7314即可
+int hashFunc(char S[], int len) {
+    int id = 0;
+    for(int i = 0; i < len - 1; i++) {
+        id = id * 26 + (S[i] - 'A');
+    }
+    id = id * 10 + (S[len - 1] - '0');
+    return id;
+}
+
+给出N个字符串（恰好由三位大写字母组成），再给出M个查询字符串，问每个查询字符串在N个字符串中出现的次数：
+#include <iostream>
+using namespace std;
+const int maxn = 100;
+char S[maxn][5], temp[5];
+int hashTable[26 * 26 * 26 + 10];
+
+int hashFunc(char S[], int len) {
+    int id = 0;
+    for(int i = 0; i < len; i++) {
+        id = id * 26 + (S[i] - 'A');
+    }
+    return id;
+}
+
+int main() {
+    int n ,m;
+    scanf("%d%d", &n, &m);
+    for(int i = 0; i < n; i++) {
+        scanf("%s", S[i]);
+        int id = hashFunc(S[i], 3);
+        hashTable[id]++;
+    }
+    for(int i = 0; i < m; i++) {
+        scanf("%s", temp);
+        int id = hashFunc(temp, 3);
+        printf("%d\n", hashTable[id]);
+    }
+    return 0;
+}
+
+
+
+递归：
+n的阶乘
+#include <iostream>
+using namespace std;
+
+int F(int n) {
+    return n == 0 ? 1 : F(n - 1) * n;
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    printf("%d", F(n));
+    return 0;
+}
+
+Fibonacci数列：
+#include <iostream>
+using namespace std;
+
+int F(int n) {
+    return n == 0 || n == 1 ? 1 : F(n - 1) + F(n - 2);
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+    printf("%d", F(n));
+    return 0;
+}
+
+全排列：
+#include <iostream>
+using namespace std;
+const int maxn = 11;
+int n, P[maxn], hashTable[maxn] = {false};
+
+void Permutation (int index) {
+    if(index == n) {
+        for(int i = 0; i < n; i++) {
+            printf("%d", P[i]);
+        }
+        printf("\n");
+        return;
+    }
+    for(int i = 1; i <= n; i++) {
+        if(! hashTable[i]) {
+            P[index] = i;
+            hashTable[i] = true;
+            Permutation(index + 1);
+            hashTable[i] = false;
+        }
+    }
+}
+
+int main() {
+    n = 3;
+    Permutation(0);
+    return 0;
+}
+
+n皇后问题：
+暴力法(不使用优化算法、直接用朴素算法来解决问题的做法)
+#include <iostream>
+using namespace std;
+const int maxn = 11;
+int n, P[maxn], hashTable[maxn] = {false};
+int count = 0;
+void generateP(int index) {
+    if(index == n + 1) {
+        bool flag = true;
+        for(int i = 1; i < n; i++) {
+            for(int j = i + 1; j <= n; j++) {
+                if(abs(i - j) == abs(P[i] - P[j])) {
+                    flag = false;
+                }
+            }
+        }
+        if(flag) count++;
+        return;
+    }
+    for(int x = 1; x <= n; x++) {
+        if(! hashTable[x]) {
+            P[index] = x;
+            hashTable[x] = true;
+            generateP(index + 1);
+            hashTable[x] = false;
+        }
+    }
+}
+int main() {
+    n = 8;
+    generateP(1);
+    printf("%d", count);
+    return 0;
+}
+
+回溯法：
+#include <iostream>
+using namespace std;
+const int maxn = 11;
+int n, P[maxn], hashTable[maxn] = {false};
+int count = 0;
+void generateP(int index) {
+    if(index == n + 1) {
+        count++;
+        return;
+    }
+    for(int x = 1; x <= n; x++) {
+        if(! hashTable[x]) {
+            bool flag = true;
+            for(int pre = 1; pre < index; pre++) {
+                if(abs(index - pre) == abs(x - P[pre])) {
+                    flag = false;
+                    break;
+                }
+            }
+            if(flag) {
+                P[index] = x;
+                hashTable[x] = true;
+                generateP(index + 1);
+                hashTable[x] = false;
+            }
+        }
+    }
+}
+int main() {
+    n = 8;
+    generateP(1);
+    printf("%d", count);
+    return 0;
+}
+
+
+
+
+二分算法一般使用 mid = left + (right - left) / 2 避免溢出
+
+快速幂（二分幂）算法（递归写法）：
+long long binaryPow(long long a, long long b, long long m) {
+    if(b == 0)  return 1;
+    if(b % 2 == 1)  return a * binaryPow(a, b - 1, m) % m;
+    else {
+        long long mul = binaryPow(a, b / 2, m);
+        return mul * mul % m;
+    }
+}
+
+
+
+two pointers
+利用问题本身与序列的特性，使用两个下标i、j对序列进行扫描（可以同向扫描，也可以反向扫描），以较低的复杂度（一般是O(n)的复杂度）解决问题
+
+
+
+vector
+
+vector的定义：
+#include <vector>
+vector<typename> name;
+vector<double> name;
+vector<char> name;
+vector<node> name;  //node是结构体类型
+vector< vector<int> > name; //>>之间要加空格 否则C++11之前标准的编译器会把它视为移位操作
+vector<typename> Arrayname[arraySize];
+vector<int> vi[100];
+
+vector容器内元素的访问
+1. 通过下标访问
+对于定义为 vector<typename> vi的vector容器来说，直接访问vi[index]即可(如vi[0], vi[1])。下标的范围是从0 ~ vi.size() - 1。
+2. 通过迭代器访问
+迭代器(iterator)可以理解为一种类似指针的东西，其定义是：
+vector<typename>::iterator it;
+这样 it 就是一个 vector<typename>::iterator 型的变量，其中typename就是定义vector时填写的类型, 这样就得到了迭代器it，并且可以通过*it来访问vector里的元素
+
+#include <iostream>
+#include <vector>
+using namespace std;
+int main() {
+	vector<int> vi;
+	for(int i = 1; i <= 5; i++)
+		vi.push_back(i);
+	vector<int>::iterator it = vi.begin();
+	for(int i = 0; i < 5; i++)
+		cout << *(it + i) << " ";
+	return 0;
+}
+vi[i]和*(vi.begin() + i))是等价的
+
+
+vector常用函数
+begin()				返回指向容器中第一个元素的迭代器
+end()				返回指向容器中最后一个元素后面的位置的迭代器
+rbegin()			返回指向容器中最后一个元素的迭代器
+rend()				返回指向容器中第一个元素前面的位置的迭代器
+push_back(x);		在 vector 后面添加一个元素
+pop_back();			删除 vector 的尾元素
+size();				获得 vector 中元素的个数
+clear();			清空 vector 中的所有元素
+insert(it, x);		向 vector 的任意迭代器 it 处插入一个元素 x，时间复杂度O(N)
+erase()
+erase(it)			删除单个元素	
+erase(first, last) 	删除一个区间内的所有元素，即删除[first,last)内所有的元素
+
+string类
+string对象的初始化：
+string s1("Hello");
+string month = "March";
+string s2(8, 'x');	//初始化为8个x
+
+
+string类不能用字符和数字初始化，但可以将字符赋值给 string 对象
+如：string s;
+	s = 'n';
+
+string 支持流读取运算符和 getline 函数
+
+可以用c_str()将 string 类型转换为字符数组进行输出，如：
+string str = "abcd";
+printf("%s\n", str.c_str());
+
+string 的赋值和连接
+
+1. 用 = 赋值
+string s1("cat"), s2;
+s2 = s1;
+
+2. 用 assign 成员函数复制
+string s1("cat"), s3;
+s3.assign(s1);
+
+3. 用 assign 成员函数部分复制
+string s1("catpig"), s3;
+s3.assign(s1, 1, 3);	//从 s1 中下标为 1 的字符开始复制 3 个字符
+
+4. 单个字符复制
+s2[5] = s1[3] = 'a';
+
+5. 用 + 运算符连接字符串
+string s1("good "), s2("morning!");
+s1 += s2;
+
+6. 用成员函数 append 连接字符串
+string s1("good "), s2("morning!");
+s1.append(s2);
+s2.append(s1, 3, s1.size());
+//下标为 3 开始，s1.size() 个字符，如果字符串内没有足够字符，则复制到字符串最后一个字符
+
+逐个访问 string 对象中的字符
+string s1("Hello");
+for(int i = 0; i < s1.length(); i++)
+	cout << s1.at(i) << endl;
+成员函数 at 会做范围检查，如果超出范围，会抛出 out_of_range 异常，而下标运算符[]不做范围检查
+
+字符串的比较可以直接用 "==", ">", ">=", "<", "<=", "!="，返回值都是 bool 类型，成立返回 true，否则返回 false
+
+compare() 比较 string 的大小
+string s1("hello"), s2("hello"), s3("hell");
+s1.compare(s2);
+s1.compare(s3);
+s3.compare(s1);
+s1.compare(1, 2, s3, 0, 3);
+s1.compare(0, s1.size(), s3);
+
+string 常用函数：
+length()/size()				//返回 string 的长度
+substr(pos, len)			//返回从 pos 号位开始、长度为 len 的子串
+swap(s)						//交换两个字符串，如 s1.swap(s2)
+find(s)/find(s, pos)		//从 pos 所在位置前向后查找，返回第一次出现 s 所在位置的下标。如果找不到，返回 string::npos
+find_first_of(s)			//从前往后查找 s 中任何一个字符第一次出现的地方，如果找到，返回找到字母的位置，如果找不到，返回 string::npos
+find_last_of(s)				//从前往后查找 s 中任何一个字符最后一次出现的地方，如果找到，返回找到字母的位置，如果找不到，返回 string::npos
+find_first_not_of(s)		//从前往后查找不在 s 中的字母第一次出现的地方，如果找到，返回找到字母的位置，如果找不到，返回 string::npos
+erase(it)					//删除单个元素
+erase(first, last)			//删除[first, last)内的所有元素
+erase(pos, length)			//pos 为需要开始删除的起始位置，length 为删除的字符个数
+str.replace(pos, len, str2)	//把 str 从 pos 号位开始、长度为 len 的子串替换为 str2
+str.replace(it1, it2, str2)	//把 str 的迭代器[it1, it2)范围的子串替换为 str2
+insert(pos, string)			//在 pos 号位置插入字符串 string
+insert(pos1, s, pos2, len)	//在字符串的第 pos1 位置插入 s 中下标 pos2 开始的 len 个字符
